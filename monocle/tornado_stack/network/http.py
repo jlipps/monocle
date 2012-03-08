@@ -62,6 +62,9 @@ class WebSocketServer(HttpServer):
         self.port = port
 
     def _add(self, el):
+        # Create a subclass of RequestHandler dynamically so we can
+        # override the get() method and have it yield to
+        # self.web_handler
         web_handler = self.web_handler
         @_o
         def _get(self):
@@ -71,6 +74,8 @@ class WebSocketServer(HttpServer):
             tornado.web.RequestHandler,),
             {'get': _get})
 
+        # And do the same for self.ws_handler, utilizing Tornado's
+        # WebSocketHandler
         ws_handler = self.ws_handler
         @_o
         def _on_message(self, message):
@@ -80,6 +85,8 @@ class WebSocketServer(HttpServer):
             (tornado.websocket.WebSocketHandler,),
             {'on_message': _on_message})
 
+        # Spin up a tornado app with the right handlers listening on the
+        # right paths
         self._tornado_app = tornado.web.Application([
             (r'^/', WebHandler),
             (r'^/ws/', WSHandler)])

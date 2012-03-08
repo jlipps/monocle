@@ -4,7 +4,7 @@ import simplejson
 
 import monocle
 from monocle import _o, Return
-monocle.init(sys.argv[1])
+monocle.init('tornado') # Only works with Tornado right now
 
 from monocle.stack import eventloop
 from monocle.stack.network import add_service, Service
@@ -29,8 +29,10 @@ SOCKET_HTML = """
         ws.onopen = function(event) { console.log("Opened socket conn"); };
         ws.onclose = function(event) { console.log("Closed socket conn"); };
         ws.onmessage = function(event) {
-            $('#content').prepend(event.data);
-            $('#realContent').append(event.data);
+            var str = event.data.toString();
+            var reversed = str.split("").reverse().join("");
+            $('#content').prepend(reversed);
+            $('#realContent').append(str);
         };
         $('#message').keyup(function() {
             ws.send($(this).val());
