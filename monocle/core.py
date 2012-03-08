@@ -11,7 +11,7 @@ import functools
 
 from callback import Callback, defer
 
-from twisted_utils import mergeFunctionMetadata
+#from twisted_utils import mergeFunctionMetadata
 
 try:
     from twisted.python.failure import Failure as TwistedFailure
