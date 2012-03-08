@@ -55,7 +55,7 @@ class HttpServer(object):
             io_loop=el._tornado_ioloop)
         self._http_server.listen(self.port)
 
-class WebSocketServer(HttpServer):
+class WebSocketServer(object):
     def __init__(self, web_handler, ws_handler, port):
         self.web_handler = web_handler
         self.ws_handler = ws_handler
